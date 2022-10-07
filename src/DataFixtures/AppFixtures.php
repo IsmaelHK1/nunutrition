@@ -17,11 +17,7 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $legumeNfruit = new FruitLegume();
-        $legumineuse = new Legumineuse();
-        $proteineAnimal = new ProteineAnimal();
-        $sucreLent = new SucreLent();
-        $fruitSec = new FruitSec();
+
         $faker = \Faker\Factory::create('fr_FR');
 
 
@@ -31,9 +27,15 @@ class AppFixtures extends Fixture
         $arraySucreLent = ["pate blé", "riz basmatique", "nouille blé", "pomme de terre", "patate douce", "pain complet", "semoule", "mais", "avoine", "quinoa"];
         $arrayFruitSec = ["noix", "amande", "chateigne", "noix de cajou", "cacahuete", "marron", "noix de coco", "palme", "date", "pistache"];
         $arrayCat = ["PDM", "sèche", "PDM & sèche"];
-        for ($i = 0; $i < 9; $i++) {
 
-            /* fruit et legume */
+        for ($i = 0; $i < 9; $i++) {
+            $legumeNfruit = new FruitLegume();
+            $legumineuse = new Legumineuse();
+            $proteineAnimal = new ProteineAnimal();
+            $sucreLent = new SucreLent();
+            $fruitSec = new FruitSec();
+
+            /*fruit et legume */
             $legumeNfruit->setName($arrayFruitNLegume[$i])
                 ->setCalories($faker->numberBetween(0, 100))
                 ->setGlucides($faker->numberBetween(0, 100))
@@ -42,7 +44,7 @@ class AppFixtures extends Fixture
                 ->setCategories($arrayCat[$faker->numberBetween(0, 2)]);
             $manager->persist($legumeNfruit);
 
-            /* legumineuse */
+            /*legumineuse */
             $legumineuse->setName($arrayLegumineuse[$i])
                 ->setCalories($faker->numberBetween(0, 100))
                 ->setGlucides($faker->numberBetween(0, 100))
@@ -51,7 +53,7 @@ class AppFixtures extends Fixture
                 ->setCategories($arrayCat[$faker->numberBetween(0, 2)]);
             $manager->persist($legumineuse);
 
-            /* proteine animale */
+            /*proteine animale */
             $proteineAnimal->setName($arrayProteineAnimal[$i])
                 ->setCalories($faker->numberBetween(0, 100))
                 ->setGlucides($faker->numberBetween(0, 100))
@@ -60,7 +62,7 @@ class AppFixtures extends Fixture
                 ->setCategories($arrayCat[$faker->numberBetween(0, 2)]);
             $manager->persist($proteineAnimal);
 
-            /* sucre lent */
+            /*sucre lent */
             $sucreLent->setName($arraySucreLent[$i])
                 ->setCalories($faker->numberBetween(0, 100))
                 ->setGlucides($faker->numberBetween(0, 100))
@@ -69,7 +71,7 @@ class AppFixtures extends Fixture
                 ->setCategories($arrayCat[$faker->numberBetween(0, 2)]);
             $manager->persist($sucreLent);
 
-            /* fruit sec */
+            /*fruit sec */
             $fruitSec->setName($arrayFruitSec[$i])
                 ->setCalories($faker->numberBetween(0, 100))
                 ->setGlucides($faker->numberBetween(0, 100))
