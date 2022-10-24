@@ -63,4 +63,22 @@ class FruitLegumeRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+/**
+ * Retourne les entité actifs, paginés par $page et $limit
+ *
+ * @param int $page 
+ * @param int $limit limite des etudiants par page
+ * @return FruitLegume|null
+ */
+   public function findByPagination($page, $limit): ?FruitLegume
+   {
+       return $this->createQueryBuilder('f')
+           ->setFirstResult($page - 1  * $limit)
+           ->setMaxResults($limit)
+           ->where('f.status = \'on\'')
+            ->getQuery()
+            ->getResult();
+   }
 }

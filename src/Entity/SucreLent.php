@@ -14,22 +14,32 @@ class SucreLent
     private ?int $id = null;
 
     #[ORM\Column(length: 22)]
+    #[Assert\NotBlank(message: 'Le nom est obligatoire')]
     private ?string $Name = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     private ?int $Glucides = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     private ?int $Proteines = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     private ?int $Lipides = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     private ?int $Calories = null;
 
     #[ORM\Column(length: 10)]
+    #[Assert\Choice(choices : ['PDM', 'seche','PDM & seche'], message: 'Le type doit être PDM ou seche ou PDM & seche')]
     private ?string $Categories = null;
+
+    #[ORM\Column(length: 4)]
+    #[Assert\Choice(choices: ['on', 'off'], message: 'Please enter a valid value : on , off')]
+    private ?string $status = null;
 
     public function getId(): ?int
     {
@@ -104,6 +114,18 @@ class SucreLent
     public function setCategories(string $Categories): self
     {
         $this->Categories = $Categories;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

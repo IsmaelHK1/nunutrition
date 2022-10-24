@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FruitLegumeRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FruitLegumeRepository::class)]
@@ -14,22 +15,32 @@ class FruitLegume
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
+    #[Assert\NotBlank(message: 'Le nom est obligatoire')]
     private ?string $Name = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     private ?int $Glucides = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     private ?int $Proteines = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     private ?int $Lipides = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     private ?int $Calories = null;
 
     #[ORM\Column(length: 10)]
+    #[Assert\Choice(choices : ['PDM', 'seche','PDM & seche'], message: 'Le type doit être PDM ou seche ou PDM & seche')]
     private ?string $Categories = null;
+
+    #[ORM\Column(length: 4)]
+    #[Assert\Choice(choices: ['on', 'off'], message: 'Please enter a valid value : on , off')]
+    private ?string $Status = null;
 
     public function getId(): ?int
     {
@@ -104,6 +115,18 @@ class FruitLegume
     public function setCategories(string $Categories): self
     {
         $this->Categories = $Categories;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->Status;
+    }
+
+    public function setStatus(string $Status): self
+    {
+        $this->Status = $Status;
 
         return $this;
     }
