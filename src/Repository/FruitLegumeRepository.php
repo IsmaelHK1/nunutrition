@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\FruitLegume;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -75,10 +77,35 @@ class FruitLegumeRepository extends ServiceEntityRepository
    public function findByPagination($page, $limit): ?FruitLegume
    {
        return $this->createQueryBuilder('f')
-           ->setFirstResult($page - 1  * $limit)
-           ->setMaxResults($limit)
-           ->where('f.status = \'on\'')
+            ->setFirstResult($page - 1  * $limit)
+            ->setMaxResults($limit)
+            ->where('f.status = \'on\'')
             ->getQuery()
             ->getResult();
    }
+
+   /**
+ * Retourne les entité actifs, paginés par $page et $limit
+ *
+ * @param string $cat 
+ * @param int $page 
+ * @param int $limitCal limite de calories
+ * @return Array|null
+ */
+public function findIDByCat($cat, $page, $limitCal, EntityManager $entityManager): ?Array
+{
+    // $OnefruitLegume = ->createQueryBuilder('f')S
+    //      ->setMaxResults(1)
+    //      ->where('f.status = \'on\'')
+    //         ->andWhere('f.categories = ' . $cat)
+    //      ->getQuery()
+    //      ->getResult();
+
+    return $entityManager->getRepository(FruitLegume::class)->createQueryBuilder('f')
+        ->setMaxResults(1)
+        ->where('f.status = \'on\'')
+        ->andWhere('f.categories = ' . $cat)
+        ->getQuery()
+        ->getResult();
+}
 }

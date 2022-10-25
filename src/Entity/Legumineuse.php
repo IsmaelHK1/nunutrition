@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LegumineuseRepository;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LegumineuseRepository::class)]

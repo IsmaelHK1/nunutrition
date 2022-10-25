@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\ProteineAnimalRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 #[ORM\Entity(repositoryClass: ProteineAnimalRepository::class)]
 class ProteineAnimal

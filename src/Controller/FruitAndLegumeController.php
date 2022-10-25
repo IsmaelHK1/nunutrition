@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface; 
 use App\Entity\FruitLegume;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,7 @@ class FruitAndLegumeController extends AbstractController
      * @Route("/api/fruitlegume", name="fruitlegume", methods={"GET"})
      */
     #[Route('/api/fruitNlegume', name: 'app_fruit_and_legume.getAll', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function getAllFruitNlegume(SerializerInterface $serializer, EntityManagerInterface $entityManager) : JsonResponse
     {
         //api call who gets all the fruit and legume

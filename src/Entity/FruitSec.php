@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\FruitSecRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 #[ORM\Entity(repositoryClass: FruitSecRepository::class)]
 class FruitSec

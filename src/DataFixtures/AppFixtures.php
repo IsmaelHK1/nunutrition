@@ -2,24 +2,53 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use App\Entity\FruitLegume;
-use App\Entity\ProteineAnimal;
-use App\Entity\Legumineuse;
-use App\Entity\SucreLent;
+use App\Entity\User;
 use App\Entity\FruitSec;
-
-
-
+use App\Entity\SucreLent;
+use App\Entity\FruitLegume;
+use App\Entity\Legumineuse;
+use App\Entity\ProteineAnimal;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Faker\Factory;
+use Generator;
 
 class AppFixtures extends Fixture
 {
+     /**
+      * Class Hasheant the password
+      *
+      * @var UserPasswordHasherInterface
+      */
+    private $userPasswordHasher;
+    public function __construct(UserPasswordHasherInterface $userPasswordHasher){
+        $this->faker = \Faker\Factory::create('fr_FR');
+        $this->userPasswordHasher = $userPasswordHasher;
+    }
+    
     public function load(ObjectManager $manager): void
     {
 
-        $faker = \Faker\Factory::create('fr_FR');
 
+        //Authenticated user
+        // for ($i = 0; $i < 10; $i++) {
+            $userUser = new User();
+            $password = 'password';
+            $userUser->setUsername('user');
+            $userUser->setRoles(['ROLE_USER']);
+            $userUser->setPassword($this->userPasswordHasher->hashPassword($userUser, $password));
+            $manager->persist($userUser);
+            
+        // }
+
+         //Authenticated admin
+            $userAdmin = new User();
+            $password = 'password';
+            $userAdmin->setUsername('admin');
+            $userAdmin->setRoles(['ROLE_ADMIN']);
+            $userAdmin->setPassword($this->userPasswordHasher->hashPassword($userAdmin, $password));
+            $manager->persist($userAdmin);
 
         $arrayFruitNLegume = ["Aubergine", "Avocat", "Banane", "Betterave", "Brocoli", "Carotte", "Cerise", "Chou-fleur", "Chou-rave", "Chou"];
         $arrayLegumineuse = ["pois chiche", "lentille", "lentille corail", "haricot rouge", "edame", "haricot blanc", "fève", "soja", "haricot noir", "pois cassé"];
@@ -37,52 +66,92 @@ class AppFixtures extends Fixture
 
             /*fruit et legume */
             $legumeNfruit->setName($arrayFruitNLegume[$i])
-                ->setCalories($faker->numberBetween(0, 100))
-                ->setGlucides($faker->numberBetween(0, 100))
-                ->setProteines($faker->numberBetween(0, 100))
-                ->setLipides($faker->numberBetween(0, 100))
-                ->setCategories($arrayCat[$faker->numberBetween(0, 2)])
-                ->setStatus('on');
+                ->setGlucides($this->faker->numberBetween(0, 50))
+                ->setCategories($arrayCat[$this->faker->numberBetween(0, 2)])
+                ->setProteines($this->faker->numberBetween(0, 50))
+                ->setLipides($this->faker->numberBetween(0, 50))
+                ->setStatus('on')
+                ->setCalories($this->faker->numberBetween(0, 100));
             $manager->persist($legumeNfruit);
 
             /*legumineuse */
             $legumineuse->setName($arrayLegumineuse[$i])
-                ->setCalories($faker->numberBetween(0, 100))
-                ->setGlucides($faker->numberBetween(0, 100))
-                ->setProteines($faker->numberBetween(0, 100))
-                ->setLipides($faker->numberBetween(0, 100))
-                ->setCategories($arrayCat[$faker->numberBetween(0, 2)])
-                ->setStatus('on');
+            ->setGlucides($this->faker->numberBetween(0, 50))
+            ->setCategories($arrayCat[$this->faker->numberBetween(0, 2)])
+            ->setProteines($this->faker->numberBetween(0, 50))
+            ->setLipides($this->faker->numberBetween(0, 50))
+            ->setStatus('on')
+            ->setCalories($this->faker->numberBetween(0, 100));
             $manager->persist($legumineuse);
 
-            /*proteine animale */
+            /*proteine animal */
             $proteineAnimal->setName($arrayProteineAnimal[$i])
-                ->setCalories($faker->numberBetween(0, 100))
-                ->setGlucides($faker->numberBetween(0, 100))
-                ->setProteines($faker->numberBetween(0, 100))
-                ->setLipides($faker->numberBetween(0, 100))
-                ->setCategories($arrayCat[$faker->numberBetween(0, 2)])
-                ->setStatus('on');
+            ->setGlucides($this->faker->numberBetween(0, 50))
+            ->setCategories($arrayCat[$this->faker->numberBetween(0, 2)])
+            ->setProteines($this->faker->numberBetween(0, 50))
+            ->setLipides($this->faker->numberBetween(0, 50))
+            ->setStatus('on')
+            ->setCalories($this->faker->numberBetween(0, 100));
             $manager->persist($proteineAnimal);
 
             /*sucre lent */
             $sucreLent->setName($arraySucreLent[$i])
-                ->setCalories($faker->numberBetween(0, 100))
-                ->setGlucides($faker->numberBetween(0, 100))
-                ->setProteines($faker->numberBetween(0, 100))
-                ->setLipides($faker->numberBetween(0, 100))
-                ->setCategories($arrayCat[$faker->numberBetween(0, 2)])
-                ->setStatus('on');
+            ->setGlucides($this->faker->numberBetween(0, 50))
+            ->setCategories($arrayCat[$this->faker->numberBetween(0, 2)])
+            ->setProteines($this->faker->numberBetween(0, 50))
+            ->setLipides($this->faker->numberBetween(0, 50))
+            ->setStatus('on')
+            ->setCalories($this->faker->numberBetween(0, 100));
             $manager->persist($sucreLent);
 
             /*fruit sec */
             $fruitSec->setName($arrayFruitSec[$i])
-                ->setCalories($faker->numberBetween(0, 100))
-                ->setGlucides($faker->numberBetween(0, 100))
-                ->setProteines($faker->numberBetween(0, 100))
-                ->setLipides($faker->numberBetween(0, 100))
-                ->setCategories($arrayCat[$faker->numberBetween(0, 2)])
-                ->setStatus('on');
+            ->setGlucides($this->faker->numberBetween(0, 50))
+            ->setCategories($arrayCat[$this->faker->numberBetween(0, 2)])
+            ->setProteines($this->faker->numberBetween(0, 50))
+            ->setLipides($this->faker->numberBetween(0, 50))
+            ->setStatus('on')
+            ->setCalories($this->faker->numberBetween(0, 100));
+            $manager->persist($fruitSec);
+
+            /*legumineuse */
+            $legumineuse->setName($arrayLegumineuse[$i])
+            ->setGlucides($this->faker->numberBetween(0, 50))
+            ->setCategories($arrayCat[$this->faker->numberBetween(0, 2)])
+            ->setProteines($this->faker->numberBetween(0, 50))
+            ->setLipides($this->faker->numberBetween(0, 50))
+            ->setStatus('on')
+            ->setCalories($this->faker->numberBetween(0, 100));
+            $manager->persist($legumineuse);
+
+            /*proteine animale */
+            $proteineAnimal->setName($arrayProteineAnimal[$i])
+            ->setGlucides($this->faker->numberBetween(0, 50))
+            ->setCategories($arrayCat[$this->faker->numberBetween(0, 2)])
+            ->setProteines($this->faker->numberBetween(0, 50))
+            ->setLipides($this->faker->numberBetween(0, 50))
+            ->setStatus('on')
+            ->setCalories($this->faker->numberBetween(0, 100));
+            $manager->persist($proteineAnimal);
+
+            /*sucre lent */
+            $sucreLent->setName($arraySucreLent[$i])
+            ->setGlucides($this->faker->numberBetween(0, 50))
+            ->setCategories($arrayCat[$this->faker->numberBetween(0, 2)])
+            ->setProteines($this->faker->numberBetween(0, 50))
+            ->setLipides($this->faker->numberBetween(0, 50))
+            ->setStatus('on')
+            ->setCalories($this->faker->numberBetween(0, 100));
+            $manager->persist($sucreLent);
+
+            /*fruit sec */
+            $fruitSec->setName($arrayFruitSec[$i])
+            ->setGlucides($this->faker->numberBetween(0, 50))
+            ->setCategories($arrayCat[$this->faker->numberBetween(0, 2)])
+            ->setProteines($this->faker->numberBetween(0, 50))
+            ->setLipides($this->faker->numberBetween(0, 50))
+            ->setStatus('on')
+            ->setCalories($this->faker->numberBetween(0, 100));
             $manager->persist($fruitSec);
         }
         $manager->flush();
