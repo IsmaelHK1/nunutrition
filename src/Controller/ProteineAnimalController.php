@@ -6,14 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SecheController extends AbstractController
+class ProteineAnimalController extends AbstractController
 {
-    #[Route('/seche', name: 'app_seche')]
+    #[Route('/proteine/animal', name: 'app_proteine_animal')]
     public function index(): JsonResponse
     {
         return $this->json([
             'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/SecheController.php',
+            'path' => 'src/Controller/ProteineAnimalController.php',
         ]);
     }
 }

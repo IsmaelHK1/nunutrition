@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\LegumineuseRepository;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Assert\NotBlank;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\LegumineuseRepository;
 
 #[ORM\Entity(repositoryClass: LegumineuseRepository::class)]
 class Legumineuse
@@ -16,7 +16,7 @@ class Legumineuse
 
 
     #[ORM\Column(length: 22)]
-    #[Assert\NotBlank(message: 'Le nom est obligatoire')]
+    #[NotBlank(message: 'Le nom est obligatoire')]
     private ?string $Name = null;
 
     #[ORM\Column]

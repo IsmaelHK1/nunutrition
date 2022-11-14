@@ -30,7 +30,7 @@ class CalculatriceController extends AbstractController
     //PREMIERE PARTIE DE LA FONTION 2
     //Permet d'utilliser la calculatrice pour l'ajouter dans la bdd
     /**
-     * Request : 
+     * Request = 
      *  poid : int
      *  taille : int
      *  age : int
@@ -38,9 +38,9 @@ class CalculatriceController extends AbstractController
      */
     #[Route('api/calculatrice/post', name: 'app_calculatrice.post', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function setCalculatrice(Request $request, SerializerInterface $serializer, Calculatrice $calculatrice, EntityManagerInterface $entityManager): JsonResponse
+    public function setCalculatrice(Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager): JsonResponse
     {
-
+            $calculatrice = new Calculatrice();
             $poid = $request->request->get('poid');
             $height = $request->request->get('height');
             $age = $request->request->get('age');
@@ -51,18 +51,15 @@ class CalculatriceController extends AbstractController
             $entityManager->persist($calculatrice);
             $entityManager->flush();
             // => APPEL LE PROF JY ARRIVE PAS
-        return new JsonResponse($calculatrice, Response::HTTP_OK);
+        return new JsonResponse($calculatrice, 201);
     }
 
-    #[Route('api/calculatrice/get', name: 'app_calculatrice.get', methods: ['GET'])]
-    public function getCalculatrice(EntityManager $entityManager, SerializerInterface $serializer): JsonResponse
+
+    #[Route('api/calculatrice/get', name: 'app_calculatrice.getAll', methods: ['GET'])]
+    public function getAllCalculatrice(EntityManager $entityManager, SerializerInterface $serializer): JsonResponse
     {
-        //get all calculatrice from the database and return it
-        //api call who gets all the fruit and legume
         $calculatrice = $entityManager->getRepository(Calculatrice::class)->findAll();
-        //serialize the data
         $calculatrice = $serializer->serialize($calculatrice, 'json', ['groups']);
-        //return the data
          return new JsonResponse($calculatrice, RESPONSE::HTTP_OK,['groups' => $calculatrice], true);
     }
 }
