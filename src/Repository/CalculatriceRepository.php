@@ -63,4 +63,13 @@ class CalculatriceRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findOneByID($id): ?Calculatrice
+   {
+       return $this->createQueryBuilder('c')
+           ->andWhere('c.user_id = :val')
+           ->setParameter('val', $id)
+           ->getQuery()
+           ->getOneOrNullResult()
+       ;
+   }
 }

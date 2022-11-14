@@ -26,6 +26,9 @@ class Calculatrice
     #[ORM\JoinColumn(nullable: false)]
     private ?user $user_id = null;
 
+    #[ORM\Column]
+    private ?int $age = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,4 +81,44 @@ class Calculatrice
 
         return $this;
     }
+
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    /**
+     * @param int $poid
+     * @param int $height
+     * @param int $age
+     * @param int $id
+     * @param string $cat
+     * @return Calculatrice
+     */
+    public function setAllCalculatrice(int $poid, int $height,int $age,int $id, string $cat): self
+    {
+
+        if($cat === 'PDM'){
+         $this->total_cal = 13.707 * $poid + 492.3 * $height - 6.673 * $age + 77.607;
+        }else if($cat === 'seche'){
+            $this->total_cal = 10 * $poid + 6.25 * $height - 5 * $age - 161;
+        }else{
+            $this->total_cal = 0;
+        }
+
+        $this->poid = $poid;
+        $this->height = $height;
+        $this->age = $age;
+        $this->user_id = $id;
+        return $this;
+    }
+
 }
