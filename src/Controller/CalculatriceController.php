@@ -72,6 +72,9 @@ class CalculatriceController extends AbstractController
     return new JsonResponse($jsonCalculatrice, Response::HTTP_CREATED, [], true);
     }
 
+    /**
+     * get all the calcul done by the user
+     */
     #[OA\Tag(name: 'Calculatrice')]
     #[OA\Response( response: 200, description: 'Returns all the calcul and param used', content: new OA\JsonContent( type: 'array', items: new OA\Items(ref: new Model(type: Calculatrice::class, groups: ['getAllCalculatrice']))))]
     #[Route('api/calculatrice', name: 'app_calculatrice.getAll', methods: ['GET'])]

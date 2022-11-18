@@ -32,6 +32,11 @@ class UserExperienceController extends AbstractController
     //FONCTION N°1
     //donne un plat en fonction du nombre de cal qu'il a besoin d'avoir
     // l'api recupere l'id de l'utilisateur et le nombre de cal qu'il a besoin d'avoir pour lui proposer un repas
+
+    /**
+     * give a dish in function of the number of cal the user need to have
+     **/
+    #[OA\Tag(name: 'Fonction 1 => UserExperience')]
     #[Route('api/user/experience/get', name: 'app_user_experience.get', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function getUserExperience(EntityManagerInterface $entityManager, SerializerInterface $serializer, TagAwareAdapterInterface $cache): JsonResponse
@@ -100,15 +105,8 @@ class UserExperienceController extends AbstractController
         return new JsonResponse($data, RESPONSE::HTTP_OK);
     }
 
-    //FONCTION N°2
-    //Donne un plat en fonction de la categorie de l'utilisateur
-    //La categorie de l'utilisateur et son total calorique est écrit dans la table calculatrice grace a l'id de l'utilisateur
-    //Toute la graille posséde un categorie (=$cat)
-    //Il y'a un max de calories pour chaque repas : le total de calories de l'utilisateur divisé par 3
-
-        /**
-     * @Route("/api/fruitLegume", name="app_fruit_and_legume.getAll", methods={"GET"})
-     * get the category of the user and return a daily dish appropriate to the his category
+    /**
+     *get the category of the user and return a daily dish appropriate to the his category
      */
     #[OA\Tag(name: 'Fonction 2 => UserExperience')]
     #[IsGranted('ROLE_USER')]
@@ -179,7 +177,6 @@ class UserExperienceController extends AbstractController
     }
 
     /**
-     * @Route("/api/user/experience/delete", name="app_user_experience.delete", methods={"DELETE"})
      * Delete a user
      */
     #[OA\Tag(name: 'UserExperience')]

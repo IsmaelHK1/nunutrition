@@ -5,6 +5,9 @@ namespace App\Entity;
 use Assert\NotBlank;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\LegumineuseRepository;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LegumineuseRepository::class)]
 class Legumineuse
@@ -16,7 +19,7 @@ class Legumineuse
 
 
     #[ORM\Column(length: 22)]
-    #[NotBlank(message: 'Le nom est obligatoire')]
+    #[Assert\NotBlank(message: 'Le nom est obligatoire')]
     private ?string $Name = null;
 
     #[ORM\Column]

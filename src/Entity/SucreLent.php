@@ -4,7 +4,8 @@ namespace App\Entity;
 
 use App\Repository\SucreLentRepository;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SucreLentRepository::class)]

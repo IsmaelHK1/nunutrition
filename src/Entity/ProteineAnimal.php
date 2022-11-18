@@ -5,7 +5,8 @@ namespace App\Entity;
 use App\Repository\ProteineAnimalRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-
+use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProteineAnimalRepository::class)]
 class ProteineAnimal

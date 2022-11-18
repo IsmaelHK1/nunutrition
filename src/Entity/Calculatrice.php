@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CalculatriceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: CalculatriceRepository::class)]
@@ -13,33 +14,43 @@ class Calculatrice
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?int $poid = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?int $height = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
+    #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?int $total_cal = null;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Assert\NotBlank(message: 'Il faut un utilisateur')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?user $user_id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: " l'âge est obligatoire")]
     #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?int $age = null;
 
     #[ORM\Column(length: 4)]
+    #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?string $status = null;
 
     #[ORM\Column(length: 20)]
+    #[Assert\Choice(choices : ['PDM', 'seche'], message: 'Le type doit être PDM ou seche ou PDM & seche')]
+    #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?string $cat = null;
 
     public function getId(): ?int
