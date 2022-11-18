@@ -26,12 +26,11 @@ class FruitAndLegumeController extends AbstractController
 {
 
     /**
-     * @Route("/api/fruitLegume", name="app_fruit_and_legume.getAll", methods={"GET"})
      * get all fruit and legume from database
-     */
+     **/
     #[Route('/api/fruitLegume', name: 'app_fruit_and_legume.getAll', methods: ['GET'])]
-    #[OA\Tag(name: 'FruitLegume')]
     #[OA\Response( response: 200, description: 'Returns all the fruit and legume', content: new OA\JsonContent( type: 'array', items: new OA\Items(ref: new Model(type: FruitLegume::class, groups: ['getAllFruitLegume']))))]
+    #[OA\Tag(name: 'FruitLegume')]
     #[IsGranted('ROLE_USER')]
     public function getAllfruitLegume(SerializerInterface $serializer, TagAwareCacheInterface $cache, FruitLegumeRepository $repository) : JsonResponse
     {
@@ -48,9 +47,8 @@ class FruitAndLegumeController extends AbstractController
 
 
     /**
-     * @Route("/api/fruitLegume/{idFruitLegume}", name="fruitLegume.get", methods={"GET"})
      * Route for get one fruit Or Legume by id 
-     */
+     **/
     #[Route('/api/fruitLegume/{idFruitLegume}', name: 'FruitLegume.get', methods: ['GET'])]
     #[OA\Tag(name: 'FruitLegume')]
     #[IsGranted('ROLE_USER')]
@@ -70,8 +68,8 @@ class FruitAndLegumeController extends AbstractController
     }
 
     /**
-     * @Route("/api/fruitLegume/{idFruitLegume}", name="fruitLegume.insert", methods={"POST"})
-     */
+     * Route for modify one fruit or legume by id
+     **/
     #[Route('/api/fruitLegume/{idFruitLegume}', name: 'FruitLegume.insert', methods: ['POST'])]
     #[OA\Tag(name: 'FruitLegume')]
     #[IsGranted('ROLE_ADMIN')]
@@ -102,9 +100,15 @@ class FruitAndLegumeController extends AbstractController
     }
 
     /**
-     * @Route("/api/fruitLegume/post", name="fruitLegume.create", methods={"CREATE"})
-     */
-    #[Route('/api/fruitLegume/post', name: 'fruitLegume.create', methods: ['POST'])]
+     * Route for create one fruit or legume
+     **/
+    #[Route('/api/fruitLegume/post', name: 'fruitLegume.create', methods: ['CREATE'])]
+    #[OA\Parameter(name : "calories", in : "query", schema : new OA\Schema(type : 'int'))]
+    #[OA\Parameter(name : "lipides", in : "query", schema : new OA\Schema(type :'int'))]
+    #[OA\Parameter(name : "proteines", in : "query", schema : new OA\Schema(type :'int'))]
+    #[OA\Parameter(name : "glucides", in : "query", schema : new OA\Schema(type :'int'))]
+    #[OA\Parameter(name : "name", in : "query", schema : new OA\Schema(type :'int'))]
+    #[OA\Parameter(name : "categorie : ['PDM', 'seche']", in : "query", schema : new OA\Schema(type :'string'))]
     #[OA\Tag(name: 'FruitLegume')]
     #[IsGranted('ROLE_ADMIN')]
     public function createfruitLegume(ValidatorInterface $validator, SerializerInterface $serializer, EntityManagerInterface $entityManager, Request $request, fruitLegumeRepository $fruitLegumeRepository, TagAwareCacheInterface $cache): JsonResponse
@@ -129,8 +133,8 @@ class FruitAndLegumeController extends AbstractController
 
 
     /**
-     * @Route("/api/fruitLegume/{idFruitLegume}", name="FruitLegume.delete", methods={"DELETE"})
-     */
+     * Route for delete one fruit or legume by id
+     **/
     #[Route('/api/fruitLegume/delete/{idFruitLegume}', name: 'FruitLegume.delete', methods: ['DELETE'])]
     #[ParamConverter('fruitLegume', options: ['id' => 'idFruitLegume'])]
     #[OA\Tag(name: 'FruitLegume')]

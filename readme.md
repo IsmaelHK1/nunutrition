@@ -7,4 +7,4 @@
 ### LA BDD :
 #### la bdd ce compose de 5 table : Legumineuse, SucreLent, ProteineAnimal, Fruit&Legume, FruitSec et d'une table Calculatrice 
 #### les 5 premiere table posséde name | glucides | proteines | lipides | calories | categories | status
-#### la table Calculatrice posséde toute les données relative à l'utilisateur pour obtenir son total calorique :  
+#### la table Calculatrice posséde toute les données relative à l'utilisateur pour obtenir son total calorique.

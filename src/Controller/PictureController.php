@@ -14,10 +14,18 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\Serializer as SerializerSerializer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\serializer;
+use OpenApi\Attributes as OA;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use Nelmio\ApiDocBundle\Annotation\Model;
 
 class PictureController extends AbstractController
 {
 
+    /** 
+    * get a picture
+    **/
+    #[OA\Tag(name: 'Picture')]
+    #[OA\Response( response: 200, description: 'Returns the picture', content: new OA\JsonContent( type: 'array', items: new OA\Items(ref: new Model(type: Picture::class, groups: ['getPicture']))))]
     #[Route('/api/picture/{idPicture}', name: 'app_picture.get', methods: ['GET'])]
     public function getPicture(SerializerInterface $serializer, EntityManagerInterface $entityManager, int $idPicture, UrlGeneratorInterface $urlGenerator, Request $request) : JsonResponse
     {
@@ -34,15 +42,11 @@ class PictureController extends AbstractController
        }
     }
 
-    #[Route('/picture', name: 'app_picture')]
-    public function index(): JsonResponse
-    {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/PictureController.php',
-        ]);
-    }
-
+    /** 
+    * create a picture
+    **/
+    #[OA\Tag(name: 'Picture')]
+    #[OA\Parameter(name : "file", in : "query", schema : new OA\Schema(type : Picture::class), description : "file")]
     #[Route('api/picture', name: 'picture.create', methods: ['POST'])]
     public function createPicture(Request $request, EntityManagerInterface $entityManager, SerializerInterface $serializer): JsonResponse
     {
@@ -55,11 +59,6 @@ class PictureController extends AbstractController
         $picture->setStatus('on');
         $entityManager->persist($picture);
         $entityManager->flush();
-
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/PictureController.php',
-        ]);
 
         $location = $this->generateUrl('picture.get', ['id' => $picture->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
         $jsonPictures = $serializer->serialize($picture, 'json', ['groups' => 'getPicture']);

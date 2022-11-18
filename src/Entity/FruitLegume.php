@@ -54,7 +54,6 @@ class FruitLegume
     private ?int $Lipides = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'La quantité est obligatoire')]
     #[Groups(['getAllFruitLegume', 'getFruitLegume'])]
     private ?int $Calories = null;
 
