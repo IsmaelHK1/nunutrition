@@ -41,6 +41,18 @@ class FruitLegumeRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByCat($value): array
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.Status = \'on\'')
+            ->andWhere('f.Categories = :val')
+            ->setParameter('val', $value)
+            ->orderBy('f.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return FruitLegume[] Returns an array of FruitLegume objects
 //     */
@@ -94,12 +106,6 @@ class FruitLegumeRepository extends ServiceEntityRepository
  */
 public function findIDByCat($cat, $page, $limitCal, EntityManager $entityManager): ?Array
 {
-    // $OnefruitLegume = ->createQueryBuilder('f')S
-    //      ->setMaxResults(1)
-    //      ->where('f.status = \'on\'')
-    //         ->andWhere('f.categories = ' . $cat)
-    //      ->getQuery()
-    //      ->getResult();
 
     return $entityManager->getRepository(FruitLegume::class)->createQueryBuilder('f')
         ->setMaxResults(1)

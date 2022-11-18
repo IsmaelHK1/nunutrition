@@ -39,6 +39,7 @@ class CalculatriceRepository extends ServiceEntityRepository
         }
     }
 
+
 //    /**
 //     * @return Calculatrice[] Returns an array of Calculatrice objects
 //     */

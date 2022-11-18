@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\CalculatriceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity(repositoryClass: CalculatriceRepository::class)]
 class Calculatrice
@@ -11,12 +13,15 @@ class Calculatrice
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?int $poid = null;
 
     #[ORM\Column]
+    #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?int $height = null;
 
     #[ORM\Column]
@@ -24,10 +29,18 @@ class Calculatrice
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?user $user_id = null;
 
     #[ORM\Column]
+    #[Groups(['getAllCalculatrice', 'getCalculatrice'])]
     private ?int $age = null;
+
+    #[ORM\Column(length: 4)]
+    private ?string $status = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $cat = null;
 
     public function getId(): ?int
     {
@@ -103,7 +116,7 @@ class Calculatrice
      * @param string $cat
      * @return Calculatrice
      */
-    public function setAllCalculatrice(int $poid, int $height,int $age,int $id, string $cat): self
+    public function setAllCalculatrice(int $poid, int $height,int $age,user $user, string $cat): self
     {
 
         if($cat === 'PDM'){
@@ -117,7 +130,31 @@ class Calculatrice
         $this->poid = $poid;
         $this->height = $height;
         $this->age = $age;
-        $this->user_id = $id;
+        $this->user_id = $user;
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCat(): ?string
+    {
+        return $this->cat;
+    }
+
+    public function setCat(string $cat): self
+    {
+        $this->cat = $cat;
+
         return $this;
     }
 

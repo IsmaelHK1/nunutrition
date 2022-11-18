@@ -11,18 +11,18 @@ use Hateoas\Configuration\Annotation as Hateoas;
 
 
 
-/**
- * @Hateoas\Relation(
- *     "self",
- *      href = @Hateoas\Route(
- *         "app_fruit_and_legume.get",
- *          parameters = {
- *           "idFruitLegume" = "expr(object.getId())"
- *         },
- *    ),
- *        exclusion = @Hateoas\Exclusion(groups = {"getAllFruitLegume"})    
- *  )
- */
+// /**
+//  * @Hateoas\Relation(
+//  *     "self",
+//  *      href = @Hateoas\Route(
+//  *         "app_fruit_and_legume.get",
+//  *          parameters = {
+//  *           "idFruitLegume" = "expr(object.getId())"
+//  *         },
+//  *    ),
+//  *        exclusion = @Hateoas\Exclusion(groups = {"getAllFruitLegume"})    
+//  *  )
+//  */
 
 #[ORM\Entity(repositoryClass: FruitLegumeRepository::class)]
 class FruitLegume

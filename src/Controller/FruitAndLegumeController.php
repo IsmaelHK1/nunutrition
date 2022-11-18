@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\FruitLegume;
 use Doctrine\ORM\EntityManagerInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use App\Repository\FruitLegumeRepository;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,28 +12,29 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
-// use Symfony\Component\Serializer\SerializerInterface;
-use JMS\Serializer\SerializerInterface; 
-use JMS\Serializer\Serializer;
-use Hateoas\Configuration\Exclusion;
+use JMS\Serializer\SerializerInterface;
 use JMS\Serializer\SerializationContext; 
-use Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use OpenApi\Attributes as OA;
+
+use function PHPSTORM_META\type;
 
 class FruitAndLegumeController extends AbstractController
 {
 
     /**
-     * @Route("/api/fruitLegume", name="fruitMLegume", methods={"GET"})
+     * @Route("/api/fruitLegume", name="app_fruit_and_legume.getAll", methods={"GET"})
+     * get all fruit and legume from database
      */
     #[Route('/api/fruitLegume', name: 'app_fruit_and_legume.getAll', methods: ['GET'])]
+    #[OA\Tag(name: 'FruitLegume')]
+    #[OA\Response( response: 200, description: 'Returns all the fruit and legume', content: new OA\JsonContent( type: 'array', items: new OA\Items(ref: new Model(type: FruitLegume::class, groups: ['getAllFruitLegume']))))]
     #[IsGranted('ROLE_USER')]
-    public function getAllfruitLegume(SerializerInterface $serializer, EntityManagerInterface $entityManager, TagAwareCacheInterface $cache, FruitLegumeRepository $repository) : JsonResponse
+    public function getAllfruitLegume(SerializerInterface $serializer, TagAwareCacheInterface $cache, FruitLegumeRepository $repository) : JsonResponse
     {
-
         $idCache = 'getAllfruitLegume';
         $json = $cache->get($idCache, function (ItemInterface $item ) use ($repository, $serializer) {
             echo 'MISE EN CACHE';
@@ -40,35 +42,39 @@ class FruitAndLegumeController extends AbstractController
             $fruitLegume = $repository->findAll();
             $context = SerializationContext::create()->setGroups(['getAllFruitLegume']);
             return $serializer->serialize($fruitLegume, 'json', $context);
-        });
-        return new JsonResponse($json, RESPONSE::HTTP_OK,[], true);
+    });
+    return new JsonResponse($json, RESPONSE::HTTP_OK,[], true);
     }
 
 
- /**
-     * @Route("/api/fruitLegume", name="fruitMLegume", methods={"GET"})
+    /**
+     * @Route("/api/fruitLegume/{idFruitLegume}", name="fruitLegume.get", methods={"GET"})
+     * Route for get one fruit Or Legume by id 
      */
-    #[Route('/api/fruitLegume/{idFruitLegume}', name: 'app_fruit_and_legume.get', methods: ['GET'])]
+    #[Route('/api/fruitLegume/{idFruitLegume}', name: 'FruitLegume.get', methods: ['GET'])]
+    #[OA\Tag(name: 'FruitLegume')]
     #[IsGranted('ROLE_USER')]
-    public function getFruitLegume(SerializerInterface $serializer, EntityManagerInterface $entityManager, TagAwareCacheInterface $cache, FruitLegumeRepository $repository, FruitLegume $fruitLegume) : JsonResponse
+    public function getFruitLegume(SerializerInterface $serializer, TagAwareCacheInterface $cache, FruitLegumeRepository $fruitLegume, int $idFruitLegume) : JsonResponse
 
     {
-        $idCache = 'getOneFruitLegume' . $fruitLegume->getId();
-        $data = $cache->get($idCache, function (ItemInterface $item) use ($fruitLegume, $serializer) {
+        $idCache = 'getOneFruitLegume';
+        $data = $cache->get($idCache, function (ItemInterface $item) use ($fruitLegume, $serializer, $idFruitLegume) {
             echo 'MISE EN CACHE';
             $item->tag('FruitLegumeCache');
+            $fruitLegume = $fruitLegume->find($idFruitLegume);
+            $fruitLegume->setStatus('on');
             $context = SerializationContext::create()->setGroups(['getFruitLegume']);
             return $serializer->serialize($fruitLegume, 'json', $context);
         });
         return new JsonResponse($data, Response::HTTP_OK, [], true);
     }
 
-
-
-
-
-    #[Route('/api/fruitLegume/{idFruitLegume}', name: 'app_fruit_and_legume.insert', methods: ['POST'])]
-    #[IsGranted('ROLE_USER')]
+    /**
+     * @Route("/api/fruitLegume/{idFruitLegume}", name="fruitLegume.insert", methods={"POST"})
+     */
+    #[Route('/api/fruitLegume/{idFruitLegume}', name: 'FruitLegume.insert', methods: ['POST'])]
+    #[OA\Tag(name: 'FruitLegume')]
+    #[IsGranted('ROLE_ADMIN')]
     #[ParamConverter('fruitLegume', options: ['id' => 'idFruitLegume'])]
     public function putfruitLegume(SerializerInterface $serializer,TagAwareCacheInterface $cache, EntityManagerInterface $entityManager, ValidatorInterface $validator, Request $request, FruitLegume $fruitLegume) : JsonResponse
     {
@@ -95,25 +101,25 @@ class FruitAndLegumeController extends AbstractController
     
     }
 
-    #[Route('/api/fruitLegume', name: 'fruitLegume.create', methods: ['CREATE'])]
+    /**
+     * @Route("/api/fruitLegume/post", name="fruitLegume.create", methods={"CREATE"})
+     */
+    #[Route('/api/fruitLegume/post', name: 'fruitLegume.create', methods: ['POST'])]
+    #[OA\Tag(name: 'FruitLegume')]
     #[IsGranted('ROLE_ADMIN')]
     public function createfruitLegume(ValidatorInterface $validator, SerializerInterface $serializer, EntityManagerInterface $entityManager, Request $request, fruitLegumeRepository $fruitLegumeRepository, TagAwareCacheInterface $cache): JsonResponse
     {
         $cache->invalidateTags(['fruitLegumeCache']);
-        $fruitLegume = $serializer->deserialize($request->getContent(), fruitLegume::class, 'json');
+        $fruitLegume = $serializer->deserialize($request->getContent(), FruitLegume::class, 'json');
         $fruitLegume->setStatus("true");
 
-        $content = $request->toArray();
-        $idFruitLegume = $content['idFruitLegume'];
-        $oneFruitLegume = $fruitLegumeRepository->find($idFruitLegume);
-
+        $data = $request->getContent();
+        $fruitLegume = $serializer->deserialize($data, FruitLegume::class, 'json');
+        $fruitLegume->setStatus("on");
         $errors = $validator->validate($fruitLegume);
         if ($errors->count() > 0) {
             return new JsonResponse($serializer->serialize($errors, 'json'), JsonResponse::HTTP_BAD_REQUEST, [], true);
         }
-
-        $fruitLegume->setfruitLegumeOwner($oneFruitLegume);
-
         $entityManager->persist($fruitLegume);
         $entityManager->flush();
         $context = SerializationContext::create()->setGroups(['getFruitLegume']);
@@ -122,16 +128,18 @@ class FruitAndLegumeController extends AbstractController
     }
 
 
-    #[Route('/api/fruitLegume/delete/{idFruitLegume}', name: 'app_fruit_and_legume.delete', methods: ['DELETE'])]
+    /**
+     * @Route("/api/fruitLegume/{idFruitLegume}", name="FruitLegume.delete", methods={"DELETE"})
+     */
+    #[Route('/api/fruitLegume/delete/{idFruitLegume}', name: 'FruitLegume.delete', methods: ['DELETE'])]
     #[ParamConverter('fruitLegume', options: ['id' => 'idFruitLegume'])]
-    #[IsGranted('ROLE_USER')]
+    #[OA\Tag(name: 'FruitLegume')]
+    #[IsGranted('ROLE_ADMIN')]
     public function deletefruitLegume(SerializerInterface $serializer, EntityManagerInterface $entityManager, TagAwareCacheInterface $cache, FruitLegume $fruitLegume) : JsonResponse
     {
-
-            $fruitLegume->setStatus("off");
-            $cache->invalidateTags(['FruitlegumeCache']);
-            $entityManager->flush();
-            return new JsonResponse($serializer->serialize("Delete done !", 'json'), Response::HTTP_OK, [], true);
-    
+        $fruitLegume->setStatus("off");
+        $cache->invalidateTags(['FruitlegumeCache']);
+        $entityManager->flush();
+        return new JsonResponse($serializer->serialize("Delete done !", 'json'), Response::HTTP_OK, [], true);
     }
 }

@@ -39,6 +39,17 @@ class ProteineAnimalRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByCat($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.Status = \'on\'')
+            ->andWhere('p.Categories = :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 //    /**
 //     * @return ProteineAnimal[] Returns an array of ProteineAnimal objects
 //     */

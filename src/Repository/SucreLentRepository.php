@@ -38,6 +38,17 @@ class SucreLentRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findByCat($value): array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('f.Status = \'on\'')
+            ->andWhere('s.Categories = :val')
+            ->setParameter('val', $value)
+            ->orderBy('s.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    /**
 //     * @return SucreLent[] Returns an array of SucreLent objects

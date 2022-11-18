@@ -39,6 +39,17 @@ class FruitSecRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByCat($value): array
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.Status = \'on\'')
+            ->andWhere('f.Categories = :val')
+            ->setParameter('val', $value)
+            ->orderBy('f.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 //    /**
 //     * @return FruitSec[] Returns an array of FruitSec objects
 //     */

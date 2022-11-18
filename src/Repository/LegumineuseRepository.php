@@ -38,6 +38,17 @@ class LegumineuseRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function findByCat($value): array
+    {
+        return $this->createQueryBuilder('l')
+            ->where('l.Status = \'on\'')
+            ->andWhere('l.Categories = :val')
+            ->setParameter('val', $value)
+            ->orderBy('l.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 
 //    /**
 //     * @return Legumineuse[] Returns an array of Legumineuse objects
